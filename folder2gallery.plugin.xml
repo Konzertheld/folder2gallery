@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pluggable type="plugin">
+	<name>Folder2gallery</name>
+	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
+	<author url="http://habariproject.org/">The Habari Community</author>
+	<version>0.1</version>
+	
+	<description><![CDATA[One-click galleries from folders.]]></description>
+	<copyright>2012</copyright>
+	<guid>f4c13842-62c1-472b-abb0-608f227c9dfb</guid>
+	<help>
+		<value><![CDATA[
+			<h3>Create Gallery</h3>
+			<p></p>
+			]]></value>
+	</help>
+</pluggable>
