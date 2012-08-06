@@ -57,7 +57,12 @@ class Folder2gallery extends Plugin
 
 	public function action_form_publish( FormUI $form, Post $post)
 	{
-		
+		$fieldset = $form->publish_controls->append('fieldset', 'folder2gallery', _t('Folder2gallery'));
+
+		//$tags_buttons = $tagselector->append('wrapper', 'tags_buttons');
+		//$tags_buttons->class = 'container';
+		$fieldset->append('static', 'addgallerybutton', '<input type="button" value="'._t('Add gallery').'" id="dofolder2gallery">');
+		$fieldset->append('static', 'addgallerygallery', '<input type="text" value="'._t('folder name').'" id="folder2gallerygallery">');
 	}
 }
 ?>
