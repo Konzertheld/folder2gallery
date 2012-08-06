@@ -61,8 +61,8 @@ class Folder2gallery extends Plugin
 
 		//$tags_buttons = $tagselector->append('wrapper', 'tags_buttons');
 		//$tags_buttons->class = 'container';
-		$fieldset->append('static', 'addgallerybutton', '<input type="button" value="'._t('Add gallery').'" id="dofolder2gallery">');
-		$fieldset->append('static', 'addgallerygallery', '<input type="text" value="'._t('folder name').'" id="folder2gallerygallery">');
+		$fieldset->append('static', 'addgallerybutton', '<input type="button" value="'._t('Add gallery').'" id="do_folder2gallery">');
+		$fieldset->append('static', 'addgallerygallery', '<input type="text" value="'._t('folder name').'" id="folder2gallery_folder">');
 	}
 	
 	/**
@@ -71,7 +71,49 @@ class Folder2gallery extends Plugin
 	 **/
 	public function action_admin_header($theme)
 	{
-		Stack::add('admin_header_javascript', $this->get_url(true) . 'folder2gallery.js', 'folder2gallery');
+		Stack::add('admin_header_javascript', $this->get_url(true) . 'folder2gallery.js', 'folder2gallery', 'jquery');
+		// Add the AJAX callback URL.
+		$url = 'folder2gallery.url=\''.URL::get('auth_ajax', array('context' => 'folder2gallery')).'\'';
+		Stack::add('admin_header_javascript', $url, 'folder2gallery_url', 'folder2gallery');
+	}
+	
+	 
+	/**
+	 * Respond to Javascript callbacks
+	 * The name of this method is action_auth_ajax_ followed by what you passed to the context parameter above.
+	 */
+	public function action_auth_ajax_folder2gallery($handler)
+	{
+		// Get the data that was sent
+		$folder = $handler->handler_vars['folder'];
+		
+		// Get the folder content
+		$path = Site::get_dir('user') . "/files/galleries/$folder";
+		$images = scandir($path);
+		
+		// Test method
+		if(array_search(".small", $images))
+		{
+			// Subfolder method
+			foreach($images as $image)
+			{
+				if(substr($image,0,1)==".") continue;
+				$imagelist["$path/$image"] = "$path/.small/$image";
+			}
+		}
+		
+		// Convert list to gallery
+		$gallerystring = "";
+		foreach($imagelist as $large => $small)
+		{
+			$gallerystring .= "<a href='$large'><img src='$small' class='f2g_pic'></a>";
+		}
+
+		// Wipe anything else that's in the buffer
+		ob_end_clean();
+
+		// Send the response
+		echo json_encode($gallerystring);
 	}
 }
 ?>
