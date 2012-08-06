@@ -64,5 +64,14 @@ class Folder2gallery extends Plugin
 		$fieldset->append('static', 'addgallerybutton', '<input type="button" value="'._t('Add gallery').'" id="dofolder2gallery">');
 		$fieldset->append('static', 'addgallerygallery', '<input type="text" value="'._t('folder name').'" id="folder2gallerygallery">');
 	}
+	
+	/**
+	 * Add the required javascript to the publish page
+	 * @param Theme $theme The admin theme instance
+	 **/
+	public function action_admin_header($theme)
+	{
+		Stack::add('admin_header_javascript', $this->get_url(true) . 'folder2gallery.js', 'folder2gallery');
+	}
 }
 ?>
