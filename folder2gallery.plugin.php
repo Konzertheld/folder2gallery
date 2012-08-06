@@ -88,8 +88,8 @@ class Folder2gallery extends Plugin
 		$folder = $handler->handler_vars['folder'];
 		
 		// Get the folder content
-		$path = Site::get_dir('user') . "/files/galleries/$folder";
-		$images = scandir($path);
+		$images = scandir(Site::get_dir('user') . "/files/galleries/$folder";);
+		$path = Site::get_url('user') . "/files/galleries/$folder";
 		
 		// Test method
 		if(array_search(".small", $images))
