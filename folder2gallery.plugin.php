@@ -40,7 +40,8 @@ class Folder2gallery extends Plugin
 			switch ( $action ) {
 				case _t( 'Configure', 'folder2gallery' ):
 					$form = new FormUI( 'folder2gallery' );
-					
+					$form->append('text', 'image_classes', 'option:folder2gallery_image_classes', _t( 'CSS classes for images: ', 'folder2gallery' ));
+					$form->append('text', 'link_classes', 'option:folder2gallery_link_classes', _t( 'CSS classes for image links: ', 'folder2gallery' ));
 					$form->append( 'submit', 'save', 'Save' );
 					$form->on_success( array($this, 'formui_submit' ) );
 					$form->out();
@@ -86,7 +87,7 @@ class Folder2gallery extends Plugin
 	{
 		// Get the data that was sent
 		$folder = $handler->handler_vars['folder'];
-		
+			
 		// Get the folder content
 		$images = scandir(Site::get_dir('user') . "/files/galleries/$folder");
 		$path = Site::get_url('user') . "/files/galleries/$folder";
@@ -104,9 +105,18 @@ class Folder2gallery extends Plugin
 		
 		// Convert list to gallery
 		$gallerystring = "";
-		foreach($imagelist as $large => $small)
+		if(count($imagelist))
 		{
-			$gallerystring .= "<a href='$large'><img src='$small' class='f2g_pic'></a>";
+			// Get classes from options
+			$image_classes = Options::get("folder2gallery_image_classes");
+			if($image_classes == '') $image_classes = "f2g_img";
+			$link_classes = Options::get("folder2gallery_link_classes");
+			if($link_classes == '') $link_classes = "f2g_link";
+			
+			foreach($imagelist as $large => $small)
+			{
+				$gallerystring .= "<a href='$large' rel='$folder' class='$link_classes'><img src='$small' class='$image_classes'></a>";
+			}
 		}
 
 		// Wipe anything else that's in the buffer
