@@ -42,6 +42,7 @@ class Folder2gallery extends Plugin
 					$form = new FormUI( 'folder2gallery' );
 					$form->append('text', 'image_classes', 'option:folder2gallery_image_classes', _t( 'CSS classes for images: ', 'folder2gallery' ));
 					$form->append('text', 'link_classes', 'option:folder2gallery_link_classes', _t( 'CSS classes for image links: ', 'folder2gallery' ));
+					$form->append('checkbox', 'link_gallery_rel', 'option:folder2gallery_link_gallery_rel', _t( 'Set the rel attribute to the gallery name (otherwise it will be "rel"): ', 'folder2gallery' ));
 					$form->append( 'submit', 'save', 'Save' );
 					$form->on_success( array($this, 'formui_submit' ) );
 					$form->out();
@@ -112,10 +113,16 @@ class Folder2gallery extends Plugin
 			if($image_classes == '') $image_classes = "f2g_img";
 			$link_classes = Options::get("folder2gallery_link_classes");
 			if($link_classes == '') $link_classes = "f2g_link";
+			$gallery_rel = Options::get("folder2gallery_link_gallery_rel");
 			
 			foreach($imagelist as $large => $small)
 			{
-				$gallerystring .= "<a href='$large' rel='$folder' class='$link_classes'><img src='$small' class='$image_classes'></a>";
+				$gallerystring .= "<a href='$large' rel='";
+				if($gallery_rel)
+					$gallerystring .= $folder;
+				else
+					$gallerystring .= "gallery";
+				$gallerystring .= "' class='$link_classes'><img src='$small' class='$image_classes'></a>";
 			}
 		}
 
