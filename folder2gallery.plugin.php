@@ -5,27 +5,6 @@
 
 class Folder2gallery extends Plugin
 {
-	/**
-	 * Run activation routines.
-	 */
-	public function action_plugin_activation()
-	{
-
-	}
-
-	/**
-	 * Run deactivation routines.
-	 */
-	public function action_plugin_deactivation( $file )
-	{
-
-	}
-
-	public function action_init()
-	{
-
-	}
-
 	public function filter_plugin_config( $actions, $plugin_id )
 	{
 		if ( $this->plugin_id() == $plugin_id ){
