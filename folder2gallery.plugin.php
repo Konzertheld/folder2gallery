@@ -1,4 +1,6 @@
 <?php
+namespace Habari;
+
 /*
  * Folder2gallery Plugin
  */
