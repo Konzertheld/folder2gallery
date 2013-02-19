@@ -72,6 +72,11 @@ class Folder2gallery extends Plugin
 			
 		// Get the folder content
 		$images = scandir(Site::get_dir('user') . "/files/galleries/$folder");
+		if(!$images)
+		{
+			Eventlog::log(_t('No images found'), 'notice');
+		}
+		
 		$path = Site::get_url('user') . "/files/galleries/$folder";
 		
 		// Test method
@@ -80,14 +85,26 @@ class Folder2gallery extends Plugin
 			// Subfolder method
 			foreach($images as $image)
 			{
+				// Skip folders
 				if(substr($image,0,1)==".") continue;
 				$imagelist["$path/$image"] = "$path/.small/$image";
+			}
+		}
+		else
+		{
+			Eventlog::log(_t('No thumbnails found'), 'notice');
+			// Use fullsize images
+			foreach($images as $image)
+			{
+				// Skip folders
+				if(substr($image,0,1)==".") continue;
+				$imagelist["$path/$image"] = "$path/$image";
 			}
 		}
 		
 		// Convert list to gallery
 		$gallerystring = "";
-		if(count($imagelist))
+		if(isset($imagelist) && count($imagelist))
 		{
 			// Get classes from options
 			$image_classes = Options::get("folder2gallery_image_classes");
@@ -108,7 +125,7 @@ class Folder2gallery extends Plugin
 		}
 
 		// Wipe anything else that's in the buffer
-		ob_end_clean();
+		// ob_end_clean();
 
 		// Send the response
 		echo json_encode($gallerystring);
